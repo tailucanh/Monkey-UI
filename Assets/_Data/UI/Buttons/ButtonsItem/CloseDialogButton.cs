@@ -38,7 +38,7 @@ public class CloseDialogButton : BaseButton
         this.dialogManager.CanvasGroup.interactable = true;
         this.dialogManager.CanvasGroup.blocksRaycasts = true;
 
-        this.itemButton.CanvasToToggle.gameObject.SetActive(false);
+        DialogManager.Instance.CanvasToToggle.gameObject.SetActive(false);
     }
 
 }

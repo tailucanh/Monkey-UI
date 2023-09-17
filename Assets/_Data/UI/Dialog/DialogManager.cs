@@ -7,17 +7,21 @@ using UnityEngine.UI;
 public class DialogManager : BaseMonoBehaviour
 {
     protected static DialogManager manager;
-    public static DialogManager Manager { get => manager; }
-    [SerializeField] protected ItemButton itemButton;
-    
+    public static DialogManager Instance { get; private set; }
     [SerializeField] protected TextMeshProUGUI itemTextDialog;
     [SerializeField] protected Image imgDialog;
+
+    [SerializeField] protected Canvas canvasToToggle;
+    public Canvas CanvasToToggle { get => canvasToToggle; }
+
     [SerializeField] protected CanvasGroup canvasGroup;
+
     public CanvasGroup CanvasGroup { get => canvasGroup; }
 
     protected override void Start()
     {
         base.Start();
+        this.CanvasToToggle.gameObject.SetActive(false);
         this.ShowDialog();
 
     }
@@ -25,7 +29,7 @@ public class DialogManager : BaseMonoBehaviour
     {
         base.Update();
 
-        if (this.itemButton.CanvasToToggle != null && this.itemButton.CanvasToToggle.gameObject.activeSelf == true)
+        if (this.CanvasToToggle != null && this.CanvasToToggle.gameObject.activeSelf == true)
         {
 
             this.canvasGroup.interactable = false;
@@ -35,6 +39,14 @@ public class DialogManager : BaseMonoBehaviour
     protected override void LoadComponents()
     {
         base.LoadComponents();
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         this.LoadDialog();
     }
     protected virtual void LoadDialog()
@@ -51,6 +63,10 @@ public class DialogManager : BaseMonoBehaviour
         if (objImgDialog == null) return;
         this.imgDialog = objImgDialog.GetComponent<Image>();
 
+        //TODO: Load canvasToToggle
+        GameObject objCanvasToToggle = GameObject.FindGameObjectWithTag("CanvasDialog");
+        if (objCanvasToToggle == null) return;
+        this.canvasToToggle = objCanvasToToggle.GetComponent<Canvas>();
 
         //TODO: Load  CanvasGroup
         GameObject objCanvasGroup = GameObject.FindGameObjectWithTag("CanvasGroup");
@@ -58,10 +74,16 @@ public class DialogManager : BaseMonoBehaviour
         this.canvasGroup = objCanvasGroup.GetComponentInChildren<CanvasGroup>();
 
     }
-    protected virtual void ShowDialog()
+    public virtual void ShowDialog()
     {
-        this.itemTextDialog.text = this.itemButton.Content.text;
-        this.imgDialog = this.itemButton.ImageItem;
+        ItemButton currentItem = ItemManager.Instance.GetCurrentItem();
+        if (currentItem != null)
+        {
+            this.canvasToToggle.gameObject.SetActive(true);
+            this.itemTextDialog.text = currentItem.Content.text;
+            this.imgDialog.sprite = currentItem.ImageItem.sprite;
+
+        }
     }
 
 
