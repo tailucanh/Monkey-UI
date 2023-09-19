@@ -13,7 +13,6 @@ public class ItemButton : BaseButton
     [SerializeField] protected Image imgItem;
     public Image ImageItem { get => imgItem; }
 
-
     protected override void LoadComponents()
     {
         base.LoadComponents();
@@ -34,12 +33,11 @@ public class ItemButton : BaseButton
 
     protected override void OnClick()
     {
-        ShowCanvasWithDelay();
+        ShowCanvasDialog();
     }
-    protected void ShowCanvasWithDelay()
+    protected void ShowCanvasDialog()
     {
         ItemManager.Instance.SetCurrentItem(this);
-        DialogManager.Instance.ShowDialog();
-
+        DialogManager.Instance.OpenDialog();
     }
 }

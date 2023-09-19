@@ -1,13 +1,16 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UserManager : BaseMonoBehaviour
 {
-    [SerializeField] protected Text usernameText;
+    [SerializeField] protected TextMeshProUGUI usernameText;
     [SerializeField] protected Image imageUser;
+
+
 
     protected override void Start()
     {
@@ -27,7 +30,7 @@ public class UserManager : BaseMonoBehaviour
 
         //TODO: Load text
         if (this.usernameText != null) return;
-        this.usernameText = GetComponentInChildren<Text>();
+        this.usernameText = GetComponentInChildren<TextMeshProUGUI>();
 
         //TODO: Load Image
         GameObject objImage = GameObject.FindGameObjectWithTag("UserImage");
